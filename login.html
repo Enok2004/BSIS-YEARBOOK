@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LOGIN</title>
+  <link rel="stylesheet" href="login.css" />
+  <style>
+    /* POPUP STYLES */
+    .popup {
+      position: fixed;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%) scale(0.5);
+      background: linear-gradient(45deg, #0099ff, #ec0c04);
+      color: white;
+      padding: 20px 50px;
+      font-size: 22px;
+      font-weight: bold;
+      border-radius: 15px;
+      z-index: 9999;
+      opacity: 0;
+      animation: popupSlideIn 0.5s forwards, popupPulse 0.8s ease-in-out 0.5s;
+    }
+
+    @keyframes popupSlideIn {
+      to {
+        transform: translateX(-50%) scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes popupPulse {
+      0% { transform: translateX(-50%) scale(1); }
+      50% { transform: translateX(-50%) scale(1.1); }
+      100% { transform: translateX(-50%) scale(1); }
+    }
+
+    @keyframes popupSlideOut {
+      to {
+        transform: translateX(-50%) translateY(-100px);
+        opacity: 0;
+      }
+    }
+
+    .popup.hide {
+      animation: popupSlideOut 0.5s forwards;
+    }
+  </style>
+</head>
+<body>
+  <!-- Background Video -->
+  <div class="video-container">
+    <video autoplay loop muted playsinline>
+      <source src="video/gfp-astro-timelapse.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <!-- Popup -->
+  <div id="popup" class="popup" style="display: none;">🎉 Login Successful!</div>
+
+  <!-- Login Form -->
+  <div class="wrapper">
+    <form id="loginForm">
+      <h2>LOGIN MERANG</h2>
+      <div class="input-field">
+        <input type="email" id="loginEmail" required />
+        <label>Enter your email</label>
+      </div>
+      <div class="input-field">
+        <input type="password" id="loginPassword" required />
+        <label>Enter your password</label>
+      </div>
+      <button type="submit">Log In</button>
+      <div class="register">
+        <p>Don't have an account? <a href="register.html">Register</a></p>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    function showLoginPopup() {
+      const popup = document.getElementById("popup");
+      popup.style.display = "block";
+
+      setTimeout(() => {
+        popup.classList.add("hide");
+      }, 1800); // Start hiding after 1.8s
+
+      setTimeout(() => {
+        popup.style.display = "none";
+        popup.classList.remove("hide");
+        window.location.href = "Enok.html";
+      }, 2500); // Redirect after animation ends
+    }
+
+    // Handle form login
+    document.getElementById("loginForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
+      const accounts = JSON.parse(localStorage.getItem("accounts")) || [];
+
+      const user = accounts.find(account => account.email === email && account.password === password);
+
+      if (user) {
+        localStorage.setItem("email", email);
+        showLoginPopup();
+      } else {
+        alert("Invalid email or password. Please try again.");
+      }
+    });
+  </script>
+</body>
+</html>
